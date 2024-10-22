@@ -1,0 +1,73 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quote of the Day</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            background-color: #f4f4f9;
+        }
+        .quote-box {
+            max-width: 600px;
+            text-align: center;
+            background: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+        .quote {
+            font-size: 24px;
+            font-weight: bold;
+            color: #333;
+        }
+        .author {
+            margin-top: 10px;
+            font-size: 18px;
+            color: #666;
+        }
+        .refresh-btn {
+            margin-top: 20px;
+            padding: 10px 20px;
+            background-color: #007bff;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+
+<div class="quote-box">
+    <div class="quote" id="quoteText">Loading quote...</div>
+    <div class="author" id="quoteAuthor"></div>
+    <button class="refresh-btn" onclick="getQuote()">Get Another Quote</button>
+</div>
+
+<script>
+    function getQuote() {
+        fetch('/api/quote')
+            .then(response => response.json())
+            .then(data => {
+                document.getElementById('quoteText').textContent = data.quote;
+                document.getElementById('quoteAuthor').textContent = data.author ? `— ${data.author}` : '';
+            })
+            .catch(error => {
+                document.getElementById('quoteText').textContent = 'Error fetching quote';
+            });
+    }
+
+    // Get the first quote when the page loads
+    window.onload = getQuote;
+</script>
+
+</body>
+</html>
